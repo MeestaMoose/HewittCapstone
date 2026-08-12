@@ -7,3 +7,12 @@ Welcome to my professional ePortfolio. This portfolio demonstrates my growth in 
 Before I started working on enhancing my chosen artifact, I performed an informal code review of the original artifact. This code review examines the existing code and analyzes it based on its existing design, functionality, and opportunities for improvement. Since I decided to work on one artifact for all three enhancements, I have evaluated different sections of the original artifact that are relevant to the planned enhancements.
 
 [![Watch My Code Review](https://img.youtube.com/vi/JozCU0tl3H0/0.jpg)](https://www.youtube.com/watch?v=JozCU0tl3H0)
+
+**[Watch the Code Review on YouTube](https://www.youtube.com/watch?v=JozCU0tl3H0)**
+
+## Original Artifact
+
+### Artifact Overview
+
+**Artifact:** Inventory Management Application
+**Originating Course:** CS360: Mobile Architect and Programming
