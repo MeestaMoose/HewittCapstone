@@ -61,3 +61,299 @@ public class RegisterActivity extends AppCompatActivity {
             db.userDao().insert(user);
 
 ```
+
+**Enhanced Code**
+
+```java
+public class RegisterActivity extends AppCompatActivity {
+    private static final String TAG = "RegisterActivity";
+
+    EditText usernameInput, passwordInput;
+    Button registerButton;
+
+    AuthenticationRepository authenticationRepository;
+    // keeps password hashing and database work off the main thread
+    private final ExecutorService authenticationExecutor =
+            Executors.newSingleThreadExecutor();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+        usernameInput = findViewById(R.id.usernameInput);
+        passwordInput = findViewById(R.id.passwordInput);
+        registerButton = findViewById(R.id.registerButton);
+
+        authenticationRepository = AuthenticationProvider.create(this);
+
+        // validates and creates the account in the background
+        registerButton.setOnClickListener(view -> {
+            String username = usernameInput.getText().toString();
+            String password = passwordInput.getText().toString();
+
+            // prevents duplicate registration requests
+            registerButton.setEnabled(false);
+            authenticationExecutor.execute(() -> {
+                try {
+                    AuthenticationRepository.Result result =
+                            authenticationRepository.register(username, password);
+
+                    // returns the registration result to the main thread
+                    runOnUiThread(() -> showRegistrationResult(result));
+                } catch (RuntimeException exception) {
+                    Log.e(TAG, "Registration failed", exception);
+                    runOnUiThread(this::showRegistrationError);
+                }
+            });
+        });
+
+    }
+```
+
+```java
+public final class AuthenticationProvider {
+    private AuthenticationProvider() {
+    }
+
+    public static AuthenticationRepository create(Context context) {
+        return new AuthenticationRepository(
+                new RoomUserStore(
+                        AppDatabase.getInstance(context).userDao(),
+                        new PasswordHasher()),
+                new SharedPreferencesSessionStore(context)
+        );
+    }
+}
+```
+
+```java
+public final class PasswordHasher {
+
+    private static final String ALGORITHM = "PBKDF2WithHmacSHA256";
+    private static final String FORMAT_NAME = "pbkdf2-sha256";
+
+    // configures the PBKDF2 work factor, salt size, and hash size
+    private static final int ITERATIONS = 600_000;
+    private static final int SALT_BYTES = 16;
+    private static final int HASH_BYTES = 32;
+
+    private final SecureRandom secureRandom = new SecureRandom();
+
+
+    // creates a new salted hash for database storage
+    public String hash(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+
+        byte[] salt = new byte[SALT_BYTES];
+        // creates a unique random salt for every stored password
+        secureRandom.nextBytes(salt);
+
+        byte[] derivedHash = derive(password, salt, ITERATIONS);
+
+        // stores the algorithm, iterations, salt, and hash in one value
+        return FORMAT_NAME
+                + "$" + ITERATIONS
+                + "$" + encode(salt)
+                + "$" + encode(derivedHash);
+    }
+
+    // checks an entered password against a stored salted hash
+    public boolean verify(String password, String storedValue) {
+        if (password == null || storedValue == null) {
+            return false;
+        }
+
+        try {
+            String[] fields = storedValue.split("\\$", -1);
+
+            // rejects values that do not match the expected storage format
+            if (fields.length != 4 || !FORMAT_NAME.equals(fields[0])) {
+                return false;
+            }
+
+            int iterations = Integer.parseInt(fields[1]);
+
+            // prevents malformed values from requesting excessive work
+            if (iterations != ITERATIONS) {
+                return false;
+            }
+
+            byte[] salt = decode(fields[2]);
+            byte[] expectedHash = decode(fields[3]);
+
+            if (salt.length != SALT_BYTES || expectedHash.length != HASH_BYTES) {
+                return false;
+            }
+
+            byte[] suppliedHash = derive(password, salt, iterations);
+
+            // compares hashes without revealing where they differ
+            return MessageDigest.isEqual(expectedHash, suppliedHash);
+        } catch (IllegalArgumentException exception) {
+            // treats malformed numbers and Base64 as failed verification
+            return false;
+
+        }
+    }
+
+    private byte[] derive(String password, byte[] salt, int iterations) {
+        PBEKeySpec specification = new PBEKeySpec(
+                password.toCharArray(),
+                salt,
+                iterations,
+                HASH_BYTES * 8
+        );
+
+        try {
+            SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM);
+            return factory.generateSecret(specification).getEncoded();
+        } catch (GeneralSecurityException exception) {
+            throw new IllegalStateException(
+                    "Cannot derive hash from password",
+                    exception
+            );
+        } finally {
+            // clears the password copy held by the key specification
+            specification.clearPassword();
+        }
+    }
+
+    private String encode(byte[] value) {
+        return Base64.encodeToString(value, Base64.NO_WRAP);
+    }
+
+    private byte[] decode(String value) {
+        return Base64.decode(value, Base64.NO_WRAP);
+    }
+}
+```
+
+**What Changed?**
+
+The changes made in this section were to rebuild the registration activity in the application. This rebuild changed the method from raw username and password storage in the SQLite database local to the application to running the entered password through a password hashing algorithm that encrypted the password using PBKDF2-SHA256, as recommended by Android standards.
+
+### Example 2: Login Activity using Hashed Passwords
+
+**Original Code**
+
+```java
+public class LoginActivity extends AppCompatActivity {
+
+    // --- UI Elements ---
+    private EditText usernameInput;
+    private EditText passwordInput;
+    private Button submitButton;
+    private Button createAccountButton;
+
+    // --- Database ---
+    private AppDatabase db;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.login_screen);
+
+        // Initialize UI components
+        usernameInput = findViewById(R.id.username);
+        passwordInput = findViewById(R.id.password);
+        submitButton = findViewById(R.id.submit_button);
+        createAccountButton = findViewById(R.id.create_account_button);
+
+        // Get database instance
+        db = AppDatabase.getInstance(this);
+
+        // Login button logic
+        submitButton.setOnClickListener(view -> {
+            String username = usernameInput.getText().toString();
+            String password = passwordInput.getText().toString();
+
+            // Check credentials against database
+            User user = db.userDao().login(username, password);
+
+            if (user != null) {
+                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                // Navigate to Main Menu on success
+                startActivity(new Intent(this, MainMenuActivity.class));
+            } else {
+                Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Navigate to Registration screen
+        createAccountButton.setOnClickListener(view -> {
+            startActivity(new Intent(this, RegisterActivity.class));
+        });
+    }
+}
+```
+
+**Enhanced Code**
+
+```java
+public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
+
+    // stores the login screen controls
+    private EditText usernameInput;
+    private EditText passwordInput;
+    private Button submitButton;
+    private Button createAccountButton;
+
+    private AuthenticationRepository authenticationRepository;
+    // keeps password verification and database work off the main thread
+    private final ExecutorService authenticationExecutor =
+            Executors.newSingleThreadExecutor();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.login_screen);
+
+        // connects the login screen controls
+        usernameInput = findViewById(R.id.username);
+        passwordInput = findViewById(R.id.password);
+        submitButton = findViewById(R.id.submit_button);
+        createAccountButton = findViewById(R.id.create_account_button);
+
+        authenticationRepository = AuthenticationProvider.create(this);
+
+        // skips login when a valid session already exists
+        if (authenticationRepository.isSessionActive()) {
+            openMainMenu();
+            return;
+        }
+
+        // validates the credentials in the background when login is submitted
+        submitButton.setOnClickListener(view -> {
+            String username = usernameInput.getText().toString();
+            String password = passwordInput.getText().toString();
+
+            // prevents duplicate requests while authentication is running
+            setAuthenticationControlsEnabled(false);
+            authenticationExecutor.execute(() -> {
+                try {
+                    AuthenticationRepository.Result result =
+                            authenticationRepository.login(username, password);
+
+                    // returns the authentication result to the main thread
+                    runOnUiThread(() -> showLoginResult(result));
+                } catch (RuntimeException exception) {
+                    Log.e(TAG, "Login failed", exception);
+                    runOnUiThread(this::showLoginError);
+                }
+            });
+        });
+
+        // opens the registration screen
+        createAccountButton.setOnClickListener(view -> {
+            startActivity(new Intent(this, RegisterActivity.class));
+        });
+    }
+```
+
+**What Changed?**
+
+The changes made in this section were to adjust the login activity from using the raw passwords entered by the user during login to encrypting the password and comparing the hashed password with the stored password from registration. I also changed the behavior of the application to use session handling, meaning after the user successfully logs into the application, a session is created. While the session is active, the application will reopen to the main menu after being closed and reopened. Before, the app would reopen to the login screen each time it was closed. The session will end when the user logs out.
