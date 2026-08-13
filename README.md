@@ -26,7 +26,11 @@ The artifact that I worked with in this milestone is an inventory management app
 
 ## Enhancement Narrative
 
-I chose to work on this artifact for this milestone and all of the milestones because I found the process of working through mobile applications entertaining. I discovered there was plenty of room for improvement in this application after reflecting on it with my increased knowledge of security and databases since that course. I would also like to be able to use this application to assist a hobby of mine, and I plan to eventually introduce more features that will better support my hobby. Mobile application development introduces multiple different software languages in a single environment. This inventory application uses at least three different languages: JavaScript, XML, and SQLite/C. Having multiple languages in a single application demonstrates my ability to switch between languages and their nuances, while showing that I can combine them to create a functional application. In this milestone, I focused on user authentication by changing the behavior of the user login function and adding a salted password hasher for protective password storage. Originally, the design of the login screen was built around a user logging into the application with their credentials. The application would check the credentials against the stored credentials in the database, and if they were a match, the screen would switch to the main menu. The only validation test was to check if the credentials matched, but now I have added checks for a blank username or password, password length requirements, and pre-existing usernames. The application now also stores login sessions, so the user stays logged in until the session is cleared or the user logs out, rather than starting at the login screen every time the application is launched. The application also now salts and hashes user passwords before storing them into the Room SQLite database. I chose to use OWASP’s recommended salted hash of PDKDF2-SHA256 with 600,000 iterations.
+I chose to work on this artifact for this milestone and all of the milestones because I found the process of working through mobile applications entertaining. I discovered there was plenty of room for improvement in this application after reflecting on it with my increased knowledge of security and databases since that course. I would also like to be able to use this application to assist a hobby of mine, and I plan to eventually introduce more features that will better support my hobby. Mobile application development introduces multiple different software languages in a single environment. This inventory application uses at least three different languages: JavaScript, XML, and SQLite/C. Having multiple languages in a single application demonstrates my ability to switch between languages and their nuances, while showing that I can combine them to create a functional application. 
+
+In this milestone, I focused on user authentication by changing the behavior of the user login function and adding a salted password hasher for protective password storage. Originally, the design of the login screen was built around a user logging into the application with their credentials. The application would check the credentials against the stored credentials in the database, and if they were a match, the screen would switch to the main menu. The only validation test was to check if the credentials matched, but now I have added checks for a blank username or password, password length requirements, and pre-existing usernames. 
+
+The application now also stores login sessions, so the user stays logged in until the session is cleared or the user logs out, rather than starting at the login screen every time the application is launched. The application also now salts and hashes user passwords before storing them into the Room SQLite database. I chose to use OWASP’s recommended salted hash of PDKDF2-SHA256 with 600,000 iterations.
 
 ## Code Changes
 
@@ -357,3 +361,96 @@ public class LoginActivity extends AppCompatActivity {
 **What Changed?**
 
 The changes made in this section were to adjust the login activity from using the raw passwords entered by the user during login to encrypting the password and comparing the hashed password with the stored password from registration. I also changed the behavior of the application to use session handling, meaning after the user successfully logs into the application, a session is created. While the session is active, the application will reopen to the main menu after being closed and reopened. Before, the app would reopen to the login screen each time it was closed. The session will end when the user logs out.
+
+### Reflection and Course Outcomes
+
+Using my experience and newfound knowledge in security and OWASP standards, I learned a lot more about how this application’s login system could be improved and secured. I discovered how session handling works in Android applications and how to use Android's SecretKeyFactory to generate the salted hashed passwords using API version 26. I also got more acquainted with OWASP’s Password Storage Cheat Sheet to help me choose the parameters for the iterations, salt, and hash. I encountered challenges while learning how to implement these features and security standards because I needed to add an entirely new section to my application to handle session handling and password hashing.
+
+After receiving feedback on my Milestone One assignment, I decided I needed to take a different route with this enhancement. I still improved the security of the application, but instead of working on the database itself, I changed the functionality of the user login, while adding proper input validation and duplicate account checks, as well as setting up a salted password hasher to protect the user account information while being transmitted and stored. This enhancement now covers course outcomes three, four, and five instead of just four and five as originally planned.
+
+# Enhancement Two: Algorithms and Data Structures
+
+## Enhancement Narrative
+
+I chose this artifact for all three enhancement categories because I could see several areas where the original application could be improved to better showcase my skills and meet the course outcomes. For this enhancement, I focused on improving the organization and usability of the inventory list. Originally, the application pulled item data from the database into a List and displayed it using Android's RecyclerView. While this worked for a small inventory, the list was unsorted, unorganized, and did not include any search or filtering capabilities. As the inventory grew, finding and updating a specific item would become increasingly time-consuming.
+
+To improve this, I added a category field to the Item table so users can assign categories to their inventory items. I also created a case-insensitive search bar that allows users to search by item name, description, or category. In addition, I added a category filter and sorting options that allow the inventory to be organized by name, category, or quantity in either ascending or descending order. The available categories are retrieved dynamically from the inventory and organized using a LinkedHashMap, which allows efficient key-based access while maintaining a predictable order.
+
+Together, these changes make the inventory easier to navigate and more practical as the amount of stored data increases. This enhancement also demonstrates my ability to modify an existing database structure, work with data collections, implement searching, sorting, and filtering logic, and improve the overall usability and scalability of an application.
+
+### Example 1: Category Field to Items
+
+**Original Code**
+
+```java
+@Entity(tableName = "items")
+public class Item {
+
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    @NonNull
+    public String name;
+    public String description;
+    public int quantity;
+
+    public Item(@NonNull String name, String description, int quantity) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+}
+```
+
+**Enhanced Code**
+
+```java
+@Entity(tableName = "items")
+public class Item {
+
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    @NonNull
+    public String name;
+    public String description;
+    public int quantity;
+    @NonNull
+    public String tag;
+
+    public Item(@NonNull String name, String description, int quantity, @NonNull String tag) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.tag = tag;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+}
+```
