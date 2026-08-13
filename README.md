@@ -35,3 +35,29 @@ I chose to work on this artifact for this milestone and all of the milestones be
 **Original Code**
 
 ```java
+public class RegisterActivity extends AppCompatActivity {
+
+    EditText usernameInput, passwordInput;
+    Button registerButton;
+
+    AppDatabase db;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+        usernameInput = findViewById(R.id.usernameInput);
+        passwordInput = findViewById(R.id.passwordInput);
+        registerButton = findViewById(R.id.registerButton);
+
+        db = AppDatabase.getInstance(this);
+
+        registerButton.setOnClickListener(view -> {
+            String username = usernameInput.getText().toString();
+            String password = passwordInput.getText().toString();
+
+            User user = new User(username, password);
+            db.userDao().insert(user);
+
+```
