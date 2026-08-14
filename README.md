@@ -655,4 +655,4 @@ With this enhancement, I was really able to bring together the different aspects
 
 This enhancement also came with a shift in what course outcomes I set out to achieve. I believe that I have achieved course outcomes one, four, and five with this enhancement. I have created ways for different audiences in computer science to work together on the same application through cloud database management, Android application development, and security-based coding practices. I migrated a section of the original database involving user accounts to a different database structure and integrated an API to facilitate the interactions between the application and database. The decision to migrate to MongoDB was made with security in mind by removing the local storage of user accounts, making them less vulnerable to being stolen by attackers.
 
-[View/Download the Second Enhanced Artifact](https://drive.google.com/file/d/1TsI5xuN0tZpxZcPi6LGWua19XvTVJCE0/view?usp=drive_link)
+[View/Download the Third Enhanced Artifact](https://drive.google.com/file/d/1TsI5xuN0tZpxZcPi6LGWua19XvTVJCE0/view?usp=drive_link)
