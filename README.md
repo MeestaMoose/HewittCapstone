@@ -507,3 +507,5 @@ After my enhancements, I have separated the user accounts and the item inventory
 
 During this enhancement, I needed to build out a small Node.js/Express server that takes over the registration and login functionality of the application. Now, whenever a new user is created or an existing user logs in, the requests are sent through the server, into an API, and then run on the MongoDB hosted through Atlas. The user passwords are still salted and hashed locally on the device with PBKDF2-SHA256; however, the encryption process has been shifted to the Node/Express server using Android’s Crypto library. The app's item inventory is still locally stored in SQLite and still features searching, filtering, and sorting as previously implemented. By moving accounts to a cloud-stored database, this also enables remote management of the user accounts for the application.
 
+## Code Changes
+
