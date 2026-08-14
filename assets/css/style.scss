@@ -1,0 +1,31 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.wrapper {
+  width: 1300px;
+}
+
+header {
+  width: 220px;
+}
+
+section {
+  width: 1000px;
+}
+
+@media print, screen and (max-width: 1200px) {
+  .wrapper {
+    width: auto;
+    margin: 0 20px;
+  }
+
+  header,
+  section,
+  footer {
+    float: none;
+    position: static;
+    width: auto;
+  }
+}
