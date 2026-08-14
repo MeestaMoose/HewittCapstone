@@ -20,7 +20,7 @@ Before I started working on enhancing my chosen artifact, I performed an informa
 
 The artifact that I worked with in this milestone is an inventory management application that I developed while in my mobile application development and design course at SNHU. The final version of this application was completed in April of 2026. This inventory application had a fairly simple set of goals it was required to meet: user logins, a dynamic item inventory, and SMS notifications. By the end of my course, I had most of the application functional, and I was able to use it as a basic inventory application with minimal security and database functionality.
 
-[View/Download the Original Artifact](https://github.com/MeestaMoose/meestamoose.github.io/blob/b643fc73297168faf21122d205b819c2fa4b24b7/Project%203%20HHewitt.zip)
+[View/Download the Original Artifact](https://drive.google.com/file/d/1T-IAxeNr_OrOkWOkgyjRKiF2CE_FIZaL/view?usp=drive_link)
 
 # Enhancement One: Software Design and Engineering
 
@@ -368,6 +368,8 @@ Using my experience and newfound knowledge in security and OWASP standards, I le
 
 After receiving feedback on my Milestone One assignment, I decided I needed to take a different route with this enhancement. I still improved the security of the application, but instead of working on the database itself, I changed the functionality of the user login, while adding proper input validation and duplicate account checks, as well as setting up a salted password hasher to protect the user account information while being transmitted and stored. This enhancement now covers course outcomes three, four, and five instead of just four and five as originally planned.
 
+[View/Download the First Enhanced Artifact](https://drive.google.com/file/d/1lIlcmrv7jfEcfv-KW5ZK9m8W65oJcy8f/view?usp=drive_link)
+
 # Enhancement Two: Algorithms and Data Structures
 
 ## Enhancement Narrative
@@ -502,6 +504,8 @@ I added a section to the InventoryActivity class that manages the Search functio
 With these enhancements, I solidified my learning on working more with Android UI and setting up more features to work with data, such as filtering, sorting, and searching. I enjoyed setting up the dynamic categories that allow for much better viewing and management of the inventory and understand the value of improving usability of the application for the end user. One of the challenges I faced in this enhancement was deciding whether to implement an individual tag creation section for the items that are selectable during the item creation process or to just leave it as free text. I decided that free text was better, as adding a different creation section for just the category tags was more work than necessary.
 
 Following instructor feedback, I changed the scope of my enhancement on this category to better meet course outcomes and the category. With this enhancement, I believe I have met course outcomes two, three, and four. Originally, my plan for this category was not in line with what was expected, and I had to re-evaluate my plan when I went through the code review. With these enhancements, I have met the expected course outcomes I set forth at that point in my coursework.
+
+[View/Download the Second Enhanced Artifact](https://drive.google.com/file/d/1TcVglGQS2HwLKq5z6YFjXaG_N7S6JgLx/view?usp=drive_link)
 
 # Enhancement Three: Databases
 
@@ -646,3 +650,4 @@ With this enhancement, I was really able to bring together the different aspects
 
 This enhancement also came with a shift in what course outcomes I set out to achieve. I believe that I have achieved course outcomes one, four, and five with this enhancement. I have created ways for different audiences in computer science to work together on the same application through cloud database management, Android application development, and security-based coding practices. I migrated a section of the original database involving user accounts to a different database structure and integrated an API to facilitate the interactions between the application and database. The decision to migrate to MongoDB was made with security in mind by removing the local storage of user accounts, making them less vulnerable to being stolen by attackers.
 
+[View/Download the Second Enhanced Artifact](https://drive.google.com/file/d/1TsI5xuN0tZpxZcPi6LGWua19XvTVJCE0/view?usp=drive_link)
