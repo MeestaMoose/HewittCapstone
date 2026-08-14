@@ -509,3 +509,5 @@ During this enhancement, I needed to build out a small Node.js/Express server th
 
 ## Code Changes
 
+### Example 1: Setting up a MongoDB Atlas Database
+
