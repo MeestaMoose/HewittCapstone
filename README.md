@@ -509,5 +509,127 @@ During this enhancement, I needed to build out a small Node.js/Express server th
 
 ## Code Changes
 
-### Example 1: Setting up a MongoDB Atlas Database
+### Example 1: Creating a MongoDB Atlas Database
 
+![Database Cluster](HewittCluster.png)
+![Database User](HewittUsers.png)
+
+**What Changed?**
+
+To support the remotely stored User table, I needed to create a cloud-hosted MongoDB database. MongoDB Atlas offers free-tier hosting options, and I used this with the standard setup to create a database cluster. I created a separate API user for accessing the database and connected to the database using the provided URI from MongoDB.
+
+### Example 2: Creating an API for the User Database
+
+**Enhanced Code**
+
+```java
+public final class ApiUserStore implements UserStore {
+    private final String baseUrl;
+
+    public ApiUserStore(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    @Override
+    public boolean credentialsMatch(String username, String password) {
+        int statusCode = post("/login", username, password);
+
+        if (statusCode == HttpURLConnection.HTTP_OK) {
+            return true;
+        }
+
+        if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+            return false;
+        }
+
+        throw new IllegalStateException(
+                "Unexpected login response: " + statusCode
+        );
+    }
+
+    @Override
+    public CreateUserResult createUser(String username, String password) {
+        int statusCode = post("/register", username, password);
+
+        if (statusCode == HttpURLConnection.HTTP_CREATED) {
+            return CreateUserResult.CREATED;
+        }
+
+        if (statusCode == HttpURLConnection.HTTP_CONFLICT) {
+            return CreateUserResult.USERNAME_TAKEN;
+        }
+
+        throw new IllegalStateException(
+                "Unexpected register response: " + statusCode
+        );
+    }
+```
+
+```java
+public final class AuthenticationProvider {
+    private static final String AUTHENTICATION_API_URL = "http://10.0.2.2:3000";
+
+    private AuthenticationProvider() {
+    }
+
+    public static AuthenticationRepository create(Context context) {
+        return new AuthenticationRepository(
+                new ApiUserStore(AUTHENTICATION_API_URL),
+                new SharedPreferencesSessionStore(context)
+        );
+    }
+}
+```
+
+```java
+public class AuthenticationRepository {
+    public static final int MINIMUM_PASSWORD_LENGTH = 6;
+
+    private final UserStore userStore;
+    private final SessionStore sessionStore;
+
+    public AuthenticationRepository(UserStore userStore, SessionStore sessionStore) {
+        this.userStore = userStore;
+        this.sessionStore = sessionStore;
+    }
+
+    public Result login(String username, String password) {
+        // normalizes and validates credentials before accessing the user store
+        String normalizedUsername = normalizeUsername(username);
+        Result validationResult = validateRequiredFields(normalizedUsername, password);
+        if (!validationResult.isSuccess()) {
+            return validationResult;
+        }
+
+        // creates a session only after the stored password hash is verified
+        if (!userStore.credentialsMatch(normalizedUsername, password)) {
+            return Result.failure(Status.INVALID_CREDENTIALS);
+        }
+
+        sessionStore.saveAuthenticatedUsername(normalizedUsername);
+        return Result.success();
+    }
+
+    public Result register(String username, String password) {
+        // validates the new account before hashing and storing its password
+        String normalizedUsername = normalizeUsername(username);
+        Result validationResult = validateRequiredFields(normalizedUsername, password);
+        if (!validationResult.isSuccess()) {
+            return validationResult;
+        }
+        if (password.length() < MINIMUM_PASSWORD_LENGTH) {
+            return Result.failure(Status.PASSWORD_TOO_SHORT);
+        }
+        UserStore.CreateUserResult creationResult =
+                userStore.createUser(normalizedUsername, password);
+        if (creationResult == UserStore.CreateUserResult.USERNAME_TAKEN) {
+            return Result.failure(Status.USERNAME_TAKEN);
+        }
+
+        return Result.success();
+    }
+```
+
+**What Changed?**
+
+In this section, I created an API that handles the user account creation and login processes. The login activity and authentication for the application now point to this API, which then uses POST methods to either create the new user or compare the entered credentials against MongoDB.
