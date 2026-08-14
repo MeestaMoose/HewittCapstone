@@ -511,8 +511,8 @@ During this enhancement, I needed to build out a small Node.js/Express server th
 
 ### Example 1: Creating a MongoDB Atlas Database
 
-![Database Cluster](HewittCluster.png)
-![Database User](HewittUsers.png)
+![Database Cluster](assets/HewittCluster.png)
+![Database User](assets/HewittUsers.png)
 
 **What Changed?**
 
