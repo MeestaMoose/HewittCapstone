@@ -1,6 +1,19 @@
 # Computer Science Capstone ePortfolio
 
-Welcome to my professional ePortfolio. This portfolio demonstrates my growth in software design, engineering, algorithms, databases, security, and professional communication.
+## Professional Self-Assessment
+
+Welcome to my professional ePortfolio. This portfolio demonstrates my growth in software design, engineering, algorithms, databases, security, and professional communication. Throughout my computer science program, I have developed technical and professional skills that have improved on my existing understanding of software development and problem solving. Completing my coursework and working through the sections of this ePortfolio allowed me to reflect on how my abilities as a computer science professional have progressed. From simply creating functional programs to considering maintainability, usability, security, and stakeholder needs, these experiences have helped shape my professional goal of becoming a database administrator who can create practical solutions while learning new technology and approaches.
+
+The work that I have done during my courses has strengthened my ability to communicate and collaborate within a professional computer science environment. Although many of my assignments were independent of each other, I constantly had to approach them from the different perspectives of the software development lifecycle such as a developer, user, or stakeholder. For example, while working through the development process for the Travlr Getaways web application, the business requirements needed to be translated into website features that supported both customers and administrators. Building design documents and writing technical explanations gave me experience communicating technical information clearly to audiences with varying degrees of technical knowledge.
+
+As I continued to develop skills in data structures and algorithms, I was exposed to several different programming languages such as Javascript, Python, and SQL through different development environments and projects. Reinforcement learning projects further strengthened my understanding of algorithms by requiring me to apply concepts like deep Q-learning, neural networks, and pathfinding. Throughout the projects and environments, I learned to consider not only whether a solution would work, but also if that solution was efficiently organized, processed, and maintained.
+
+Another important area that I have improved my knowledge and skills in is software security. Throughout the different projects, such as the Artemis Financial application and other security-focused coursework, I worked with concepts such as secure communication, access control, and the principle of least privilege. The culmination of these experiences has reinforced the importance of implementing security into the different aspects of the software development life cycle instead of just a single section of it. Designing software with security in mind protects user information and company assets, and is now part of my core values as a professional in the technology field.
+
+Developing this ePortfolio has allowed me to synthesize the skills and knowledge gained throughout my coursework while revisiting an application I created earlier in the program. I was able to identify areas that needed improvement and revisited my work through a more experienced perspective. I used those skills to then demonstrate how my approach to software development has changed and how I now come to a solution to a problem with a better understanding of the structure, security, and maintainability of the software. 
+
+The artifact versions that follow demonstrate this growth through enhancements to an inventory management application built in the mobile app development course. These enhancements address software design and engineering, algorithms and data structures, and databases while improving the security of the application. Each enhancement focuses on different aspects of computer science and software development; they come together to build a secure, functional, and efficient application. The original artifact and its enhanced versions are evidence of my ability to evaluate existing software, identify opportunities for improvement, and apply the knowledge and skills developed throughout the computer science program.
+
 
 ## Code Review
 
@@ -656,6 +669,3 @@ With this enhancement, I was really able to bring together the different aspects
 This enhancement also came with a shift in what course outcomes I set out to achieve. I believe that I have achieved course outcomes one, four, and five with this enhancement. I have created ways for different audiences in computer science to work together on the same application through cloud database management, Android application development, and security-based coding practices. I migrated a section of the original database involving user accounts to a different database structure and integrated an API to facilitate the interactions between the application and database. The decision to migrate to MongoDB was made with security in mind by removing the local storage of user accounts, making them less vulnerable to being stolen by attackers.
 
 [View/Download the Third Enhanced Artifact](https://drive.google.com/file/d/1TsI5xuN0tZpxZcPi6LGWua19XvTVJCE0/view?usp=drive_link)
-
-# Professional Self-Assessment
-
