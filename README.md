@@ -454,3 +454,56 @@ public class Item {
     }
 }
 ```
+
+**What Changed?**
+
+The changes made in this example are adding the additional "tag" field to the items table, along with an appropriate getTag() method to obtain the tag information from the table.
+
+### Example 2: Search Bar for Inventory Screen
+
+**Enhanced Code**
+
+```java
+// applies the current controls and displays the matching items
+    private void displayProcessedItems() {
+        if (db == null || categorySpinner.getAdapter() == null) {
+            return;
+        }
+
+        InventoryItemProcessor.SortField sortField = getSelectedSortField();
+        boolean ascending = sortDirectionSpinner.getSelectedItemPosition() == 0;
+        List<Item> displayedItems = InventoryItemProcessor.process(
+                allItems,
+                inventorySearch.getQuery().toString(),
+                getSelectedCategory(),
+                sortField,
+                ascending
+        );
+
+        itemAdapter = new ItemAdapter(displayedItems, db, this::refreshItemList);
+        recyclerView.setAdapter(itemAdapter);
+    }
+```
+```xml
+<SearchView
+            android:id="@+id/inventorySearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="@string/search_inventory" />
+```
+
+**What Changed?**
+
+I added a section to the InventoryActivity class that manages the Search function in the application, with an accompanying Search field to the Application's Layout XML for the Inventory Screen.
+
+# Enhancement Three: Databases
+
+## Enhancement Narrative
+
+For this final enhancement, I chose to work on the same artifact because I know it allowed me to grow my skills in connecting databases to applications and migrating between different databases. With this artifact, user accounts and item inventory were stored in a single SQLite database created locally on the Android device. 
+
+After my enhancements, I have separated the user accounts and the item inventory into two different databases, one as a MongoDB and the other as SQLite. The user account data was stored locally on the phone and posed a security risk if a threat actor wanted to gain unauthorized access to the application. By moving the user accounts to a MongoDB created through MongoDB Atlas and stored in the cloud, the database becomes more secure by not being accessible directly on the device. 
+
+During this enhancement, I needed to build out a small Node.js/Express server that takes over the registration and login functionality of the application. Now, whenever a new user is created or an existing user logs in, the requests are sent through the server, into an API, and then run on the MongoDB hosted through Atlas. The user passwords are still salted and hashed locally on the device with PBKDF2-SHA256; however, the encryption process has been shifted to the Node/Express server using Android’s Crypto library. The app's item inventory is still locally stored in SQLite and still features searching, filtering, and sorting as previously implemented. By moving accounts to a cloud-stored database, this also enables remote management of the user accounts for the application.
+
