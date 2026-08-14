@@ -499,6 +499,11 @@ The changes made in this example are adding the additional "tag" field to the it
 
 I added a section to the InventoryActivity class that manages the Search function in the application, with an accompanying Search field to the Application's Layout XML for the Inventory Screen.
 
+<p align="center">
+  <img src="assets/SearchScreen1.png" width="45%" alt="Unsearched Inventory">
+  <img src="assets/SearchScreen2.png" width="45%" alt="Searched Inventory">
+</p>
+
 ### Reflection and Course Outcomes
 
 With these enhancements, I solidified my learning on working more with Android UI and setting up more features to work with data, such as filtering, sorting, and searching. I enjoyed setting up the dynamic categories that allow for much better viewing and management of the inventory and understand the value of improving usability of the application for the end user. One of the challenges I faced in this enhancement was deciding whether to implement an individual tag creation section for the items that are selectable during the item creation process or to just leave it as free text. I decided that free text was better, as adding a different creation section for just the category tags was more work than necessary.
