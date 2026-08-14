@@ -497,6 +497,12 @@ The changes made in this example are adding the additional "tag" field to the it
 
 I added a section to the InventoryActivity class that manages the Search function in the application, with an accompanying Search field to the Application's Layout XML for the Inventory Screen.
 
+### Reflection and Course Outcomes
+
+With these enhancements, I solidified my learning on working more with Android UI and setting up more features to work with data, such as filtering, sorting, and searching. I enjoyed setting up the dynamic categories that allow for much better viewing and management of the inventory and understand the value of improving usability of the application for the end user. One of the challenges I faced in this enhancement was deciding whether to implement an individual tag creation section for the items that are selectable during the item creation process or to just leave it as free text. I decided that free text was better, as adding a different creation section for just the category tags was more work than necessary.
+
+Following instructor feedback, I changed the scope of my enhancement on this category to better meet course outcomes and the category. With this enhancement, I believe I have met course outcomes two, three, and four. Originally, my plan for this category was not in line with what was expected, and I had to re-evaluate my plan when I went through the code review. With these enhancements, I have met the expected course outcomes I set forth at that point in my coursework.
+
 # Enhancement Three: Databases
 
 ## Enhancement Narrative
@@ -633,3 +639,10 @@ public class AuthenticationRepository {
 **What Changed?**
 
 In this section, I created an API that handles the user account creation and login processes. The login activity and authentication for the application now point to this API, which then uses POST methods to either create the new user or compare the entered credentials against MongoDB.
+
+### Reflection and Course Outcomes
+
+With this enhancement, I was really able to bring together the different aspects of my courses I have taken here at SNHU. I used my experience with building full-stack websites to build an API that bridges the gap between an Android application and a MongoDB cloud database. I solidified my skills in secure coding by applying updated standards on password encryption and avoiding hardcoded user account information. I also applied my time spent developing in a mobile application environment and expanded my abilities to build more feature-rich applications. I truly enjoyed the process and found the successful outcome rewarding as it is. The main challenge I experienced was how the registration and login activities would transition from being handled by Android to the backend server. It took some research and testing to achieve, but I was able to change the activities over, and they now run through the Node/Express server.
+
+This enhancement also came with a shift in what course outcomes I set out to achieve. I believe that I have achieved course outcomes one, four, and five with this enhancement. I have created ways for different audiences in computer science to work together on the same application through cloud database management, Android application development, and security-based coding practices. I migrated a section of the original database involving user accounts to a different database structure and integrated an API to facilitate the interactions between the application and database. The decision to migrate to MongoDB was made with security in mind by removing the local storage of user accounts, making them less vulnerable to being stolen by attackers.
+
