@@ -1,6 +1,5 @@
 # Computer Science Capstone ePortfolio
 
-```markdown
 ## Portfolio Contents
 
 - [Professional Self-Assessment](#professional-self-assessment)
@@ -9,8 +8,6 @@
 - [Enhancement One: Software Design and Engineering](#enhancement-one-software-design-and-engineering)
 - [Enhancement Two: Algorithms and Data Structures](#enhancement-two-algorithms-and-data-structures)
 - [Enhancement Three: Databases](#enhancement-three-databases)
-- [Course Outcomes](#course-outcomes)
-```
 
 ## Professional Self-Assessment
 
