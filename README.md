@@ -1,5 +1,17 @@
 # Computer Science Capstone ePortfolio
 
+```markdown
+## Portfolio Contents
+
+- [Professional Self-Assessment](#professional-self-assessment)
+- [Code Review](#code-review)
+- [Original Artifact](#original-artifact)
+- [Enhancement One: Software Design and Engineering](#enhancement-one-software-design-and-engineering)
+- [Enhancement Two: Algorithms and Data Structures](#enhancement-two-algorithms-and-data-structures)
+- [Enhancement Three: Databases](#enhancement-three-databases)
+- [Course Outcomes](#course-outcomes)
+```
+
 ## Professional Self-Assessment
 
 Welcome to my professional ePortfolio. This portfolio demonstrates my growth in software design, engineering, algorithms, databases, security, and professional communication. Throughout my computer science program, I have developed technical and professional skills that have improved on my existing understanding of software development and problem solving. Completing my coursework and working through the sections of this ePortfolio allowed me to reflect on how my abilities as a computer science professional have progressed. From simply creating functional programs to considering maintainability, usability, security, and stakeholder needs, these experiences have helped shape my professional goal of becoming a database administrator who can create practical solutions while learning new technology and approaches.
